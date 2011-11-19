@@ -2,11 +2,14 @@ package com.vvs;
 
 import java.io.File;
 
-import com.vvs.webserver.ConnectionManager;
+import org.apache.log4j.Logger;
+
+import com.vvs.webserver.cmd.CMD;
 import com.vvs.webserver.gui.GUI;
 
 public class Main {
-
+	public static final Logger logger = Logger.getLogger("");
+	
 	public static void main(String[] args) {
 		
 		File f = new File(".");
@@ -14,11 +17,18 @@ public class Main {
 		
 		if (args.length == 0 || args[0].equals("-help")) {
 			printHelpMessage();
+			logger.info("Printed help message.");
+			
 		} else if (args[0].equals("-c")) {
 			startCmd();
+			logger.info("Started command line.");
+			
 		} else if (args[0].equals("-g")) {
 			startGUI();
+			logger.info("Started GUI mode.");
+			
 		}
+		System.exit(0);
 	}
 	
 	private static void printHelpMessage() {
@@ -29,20 +39,12 @@ public class Main {
 	}
 
 	private static void startCmd() {
-		ConnectionManager server = new ConnectionManager();
-		Thread thread = new Thread(server);
-		
-		thread.start();
-		
-		System.out.println("running");
-		
+		CMD cmd = new CMD();
 		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+			cmd.run();
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
-		
-		//server.setMaintenace(true);
 	}
 	
 	private static void startGUI () {

@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.vvs.Main;
+
 public class WebServer extends Thread {
 	private static final String ROOT = "./www/";
 	boolean maintenance = false;
@@ -27,7 +29,7 @@ public class WebServer extends Thread {
     }
 
 	public void run() {
-		System.out.println("New Communication Thread Started");
+		Main.logger.info("New Communication Thread Started");
 
 		try {
 			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),
@@ -39,7 +41,7 @@ public class WebServer extends Thread {
 			
 			while ((inputLine = in.readLine()) != null) {
 				// use this only for tests
-				///this.basicTest(inputLine, out);
+				//this.basicTest(inputLine, out);
 				
 				// use this for real server
 				this.handleRequest(inputLine, out);
@@ -52,7 +54,7 @@ public class WebServer extends Thread {
 			in.close();
 			clientSocket.close();
 		} catch (IOException e) {
-			System.err.println("Problem with Communication Server");
+			Main.logger.error("Problem with Communication Server");
 			System.exit(1);
 		}
 	}
@@ -64,7 +66,7 @@ public class WebServer extends Thread {
 	 */
 	@SuppressWarnings("unused")
 	private void basicTest(String inputLine, PrintWriter out) {
-		System.out.println("Server: " + inputLine);
+		//System.out.println("Server: " + inputLine);
 		out.println(inputLine);
 	}
 
@@ -86,11 +88,10 @@ public class WebServer extends Thread {
 	void processHttpGet(String inputLine, PrintWriter out) {
 		boolean processResult = false;
 		String[] strings = inputLine.split(" ");
-		//out.println("You asked for page: " + s[1]);
+		Main.logger.info("Page: " + strings[1] + " was requested.");
 
 		if (strings.length <3){
-			// logging!!!
-			System.out.println("http get composed of two strings..... ?!");
+			Main.logger.info("http get composed of two strings..... ?!");
 		} else {
 			if (!maintenance){
 				processResult = pp.processPage(strings[1], out);
