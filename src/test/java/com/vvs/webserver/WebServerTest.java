@@ -1,10 +1,8 @@
 package com.vvs.webserver;
 
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.IOException;
 
 import static org.mockito.Mockito.*;
-import org.junit.Before;
 import org.junit.Test;
 
 public class WebServerTest {
@@ -23,13 +21,12 @@ public class WebServerTest {
 	}
 	
 	@Test
-	public void testHandleRequest() {
+	public void testHandleRequest() throws IOException {
 		web = mock(WebServer.class);
-		PrintWriter out = new PrintWriter(System.out);
 		
 		String line = "GET /aaa HTTP/1.1";
 		
-		web.handleRequest(line, out);
-		verify(web).processHttpGet(line, out);
+		web.handleRequest(line, null);
+		verify(web).processHttpGet(line, null);
 	}
 }

@@ -95,6 +95,8 @@ public class CMD{
 		result += " s - start the webserver.\n";
 		result += " m - toggle maintenance mode on/off.\n";
 		result += " k - stop (kill) the webserver.\n";
+		//result += " c - change port.\n";
+		//result += " w - change web root.\n";
 		result += " p - print current state.\n";
 		result += " h - print this help menu.\n";
 		result += " q - quit the application.\n";
