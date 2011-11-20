@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.vvs.Main;
 
@@ -14,6 +15,7 @@ public class WebServer extends Thread {
 
 	protected Socket clientSocket;
 	private PageProcesor pp = null;
+	private ArrayList<String> httpGet = new ArrayList<String>(); 
 	
 	
 	public WebServer(Socket clientSoc, boolean maintenance) {
@@ -29,25 +31,49 @@ public class WebServer extends Thread {
     }
 
 	public void run() {
+		String aux = "", inputLine;
+		PrintWriter out ;
+		BufferedReader in;
+		
+		
 		Main.logger.info("New Communication Thread Started");
 
 		try {
-			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(),
-					true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(
+			out= new PrintWriter(clientSocket.getOutputStream(), true);
+			in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
 
-			String inputLine;
-			
 			while ((inputLine = in.readLine()) != null) {
+				
+				httpGet.add(inputLine);
+				
+				if (inputLine.trim().equals(""))
+					break;
+			}
+			
+			//
+			// for safety, let's log the http get.
+			//
+			aux = "Server received this http request:\n";
+			for (String s:httpGet) {
+				aux += s + "\n";
+			}
+			Main.logger.info(aux);
+			
+			
+			//
+			// Here we believe that the first line in the http get tells us what to return. 
+			//
+			if (httpGet != null && httpGet.size()>0) {
+				aux = httpGet.get(0);
+				
 				// use this only for tests
 				//this.basicTest(inputLine, out);
 				
 				// use this for real server
-				this.handleRequest(inputLine, out);
-
-				if (inputLine.trim().equals(""))
-					break;
+				this.handleRequest(aux, out);
+				
+				Main.logger.info("Server responds to this line: " + aux);
 			}
 
 			out.close();
@@ -59,16 +85,6 @@ public class WebServer extends Thread {
 		}
 	}
 
-	/**
-	 * Print the http GET message from the browser.
-	 * @param inputLine
-	 * @param out
-	 */
-	@SuppressWarnings("unused")
-	private void basicTest(String inputLine, PrintWriter out) {
-		//System.out.println("Server: " + inputLine);
-		out.println(inputLine);
-	}
 
 	/**
 	 * See what the client wrote to us.
@@ -103,5 +119,17 @@ public class WebServer extends Thread {
 		if (!processResult) {
 			out.println("<h1>404: not found: " + strings[1] + " </h1>");
 		}
+	}
+
+	
+	/**
+	 * Print the http GET message from the browser.
+	 * @param inputLine
+	 * @param out
+	 */
+	@SuppressWarnings("unused")
+	private void basicTest(String inputLine, PrintWriter out) {
+		//System.out.println("Server: " + inputLine);
+		out.println(inputLine);
 	}
 }

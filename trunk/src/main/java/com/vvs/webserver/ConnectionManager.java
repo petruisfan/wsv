@@ -37,8 +37,8 @@ public class ConnectionManager implements Runnable {
 				}
 			} catch (IOException e) {
 				Main.logger.fatal("Accept failed.");
-				
-				System.exit(1);
+
+				//System.exit(1);
 			}
 		} catch (IOException e) {
 			Main.logger.fatal("Could not listen on port: " + port);
