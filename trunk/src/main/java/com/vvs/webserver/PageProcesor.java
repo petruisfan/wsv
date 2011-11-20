@@ -1,26 +1,28 @@
 package com.vvs.webserver;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Vector;
 
+import com.vvs.Main;
 import com.vvs.webserver.helperObjects.HttpResponse;
 
 public class PageProcesor {
 	private String webRoot = "";
-
+	private BufferedOutputStream out = null; 
+	private String maintenanceString = "<h1>Down for maintenance!</h1>";
 	
-	public PageProcesor(String root) {
+	
+	public PageProcesor(String root, BufferedOutputStream out) {
 		if (root == null || root.equalsIgnoreCase("")){
 			throw new IllegalArgumentException("Invalid argument");
 		}
 		this.webRoot = root;
+		
+		this.out = out;
 	}
 	
 	/**
@@ -30,71 +32,33 @@ public class PageProcesor {
 	 * @param out
 	 * @return
 	 */
-//	public boolean processPage(String page, PrintWriter out) {
-//		if (page == null || out == null) {
-//			throw new IllegalArgumentException("Invalid argument");
-//		}
-//		
-//		if (page.equals("/")){
-//			page = "index.html";
-//		}
-//		
-//		boolean result = false;
-//		String path = webRoot + page;
-//		
-//		File f = new File(path);
-//		
-//		if (! f.exists()){
-//			return false;
-//		}
-//		
-//		BufferedReader fileR = null;
-//		try {
-//			fileR= new BufferedReader(new FileReader(f));
-//			
-//			String line = "";
-//			while ( (line = fileR.readLine()) != null){
-//				out.write(line);
-//			}
-//			
-//			result = true;
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return result;
-//	}
-	
-	public boolean processPage(String page, PrintWriter out) {
-		if (page == null || out == null) {
+	public boolean processPage(String page) {
+		if (page == null) {
 			throw new IllegalArgumentException("Invalid argument");
 		}
 		
 		if (page.equals("/")){
 			page = "index.html";
+			
+			Main.logger.info("No page selected. Using index.html");
 		}
 		
 		boolean result = false;
-		String path = webRoot + page;
+		String path = webRoot + page;   // page we must serve.
 
 		if (! (new File(path)).exists()){
 			return false;
 		}
 		
-		FileInputStream f = null;
-		DataInputStream fileR = null;
-	
-		//
-		// Read the data from the file.
-		//
+		FileInputStream fileR = null;
 		Vector<Integer> dataVector = new Vector<Integer>();
 		
 		try {
-			f = new FileInputStream(path);
-			fileR= new DataInputStream(f);
-			
+			fileR = new FileInputStream(path);
+
+			//
+			// Read the data from the file.
+			//
 			int data;
 			while ( (data = fileR.read()) != -1){
 				dataVector.add(data);
@@ -103,24 +67,32 @@ public class PageProcesor {
 			//
 			//Create an Http reponse.
 			//
+			// TODO create this in a single place.
 			HttpResponse response = new HttpResponse(dataVector.size());
 			
-			if (page.endsWith(".png")) {
+			if (page.endsWith(".png") || 
+					page.endsWith(".jpg") ||
+					page.endsWith(".jpeg") ||
+					page.endsWith(".jfif") ||
+					page.endsWith(".bmp") ||
+					page.endsWith(".tif") ||
+					page.endsWith(".tiff") ||
+					page.endsWith(".ico")) {
 				response.setContentType("image/x-icon");
 			}
 			
-			out.write(response.getHeader());
+			out.write(response.getHeader().getBytes());
 			
 			for (Integer i:dataVector) {
 				out.write(i);
 			}
 			
-			
-			result = true;
+			result = true;  // this means all went well, the page was served.
+
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			Main.logger.error(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			Main.logger.error(e);
 		}
 		
 		return result;
@@ -129,14 +101,15 @@ public class PageProcesor {
 	/**
 	 * @param out
 	 * @return		The "Down for maintenance message".
+	 * @throws IOException 
 	 */
-	public boolean maintenance(PrintWriter out) {
+	public boolean maintenance() throws IOException {
 		if (out == null) {
 			throw new IllegalArgumentException("Invalid argument");
 		}
 		boolean result = false;
 		
-		out.write("<h1>Down for maintenance!</h1>");
+		out.write(maintenanceString.getBytes());
 		
 		result = true;
 		return result;

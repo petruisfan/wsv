@@ -32,4 +32,19 @@ public class HttpResponse {
 		
 		return result + "\n";
 	}
+	
+	public void setResponseCode(int responseCode) {
+		this.responseCode = responseCode;
+	}
+	
+	public void setResponseStatus(String responseStatus) {
+		this.responseStatus = responseStatus;
+	}
 }
+//byte[] buffer = new byte[256];
+//int bytes;
+//FileInputStream fis;
+//try {
+//    fis = new FileInputStream(new File(file));
+//    while ((bytes = fis.read(buffer)) != -1)
+//        output.write(buffer, 0, bytes)

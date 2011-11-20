@@ -1,5 +1,6 @@
 package com.vvs.webserver;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +9,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import com.vvs.Main;
+import com.vvs.webserver.helperObjects.HttpResponse;
 
 public class WebServer extends Thread {
 	private static final String ROOT = "./www/";
@@ -22,8 +24,6 @@ public class WebServer extends Thread {
 		if (clientSoc == null) {
 			throw new IllegalArgumentException("Invalid argument");
 		}
-		pp = new PageProcesor(ROOT);
-		
 		this.maintenance = maintenance;
 		
         clientSocket = clientSoc;
@@ -32,17 +32,19 @@ public class WebServer extends Thread {
 
 	public void run() {
 		String aux = "", inputLine;
-		PrintWriter out ;
+		BufferedOutputStream out ;
 		BufferedReader in;
 		
 		
 		Main.logger.info("New Communication Thread Started");
 
 		try {
-			out= new PrintWriter(clientSocket.getOutputStream(), true);
+			out= new  BufferedOutputStream(clientSocket.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(
 					clientSocket.getInputStream()));
 
+			pp = new PageProcesor(ROOT, out);
+			
 			while ((inputLine = in.readLine()) != null) {
 				
 				httpGet.add(inputLine);
@@ -90,34 +92,50 @@ public class WebServer extends Thread {
 	 * See what the client wrote to us.
 	 * @param inputLine
 	 * @param out
+	 * @throws IOException 
 	 */
-	void handleRequest(String inputLine, PrintWriter out) {
+	void handleRequest(String inputLine, BufferedOutputStream out) throws IOException {
 		if (inputLine.startsWith("GET") && inputLine.endsWith("HTTP/1.1")) {
-			this.processHttpGet(inputLine, out);		}
+			this.processHttpGet(inputLine, out);		
+		}
 	}
 
 	/**
 	 * Handle a http get request for a page.
 	 * @param inputLine
 	 * @param out
+	 * @throws IOException 
 	 */
-	void processHttpGet(String inputLine, PrintWriter out) {
+	void processHttpGet(String inputLine, BufferedOutputStream out) throws IOException {
 		boolean processResult = false;
 		String[] strings = inputLine.split(" ");
 		Main.logger.info("Page: " + strings[1] + " was requested.");
 
 		if (strings.length <3){
 			Main.logger.info("http get composed of two strings..... ?!");
-		} else {
+		} 
+		else {
 			if (!maintenance){
-				processResult = pp.processPage(strings[1], out);
+				processResult = pp.processPage(strings[1]);
+				
+				Main.logger.info(strings[1] + " will be processed."); 
+						
 			} else {
-				processResult = pp.maintenance(out);
+				processResult = pp.maintenance();
+				
+				Main.logger.info("Maintenance page will be replied");
 			}
 		}
 		
 		if (!processResult) {
-			out.println("<h1>404: not found: " + strings[1] + " </h1>");
+			HttpResponse response = new HttpResponse(0);
+			
+			response.setResponseCode(404);
+			response.setResponseStatus("Not Found");
+			
+			out.write(response.getHeader().getBytes());
+			
+			Main.logger.error("Something bad happened. Code 404 has been replied.");
 		}
 	}
 
