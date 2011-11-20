@@ -11,10 +11,7 @@ public class Main {
 	public static final Logger logger = Logger.getLogger("");
 	
 	public static void main(String[] args) {
-		
-		File f = new File(".");
-		System.out.println(f.getAbsoluteFile());
-		
+
 		if (args.length == 0 || args[0].equals("-help")) {
 			printHelpMessage();
 			logger.info("Printed help message.");
