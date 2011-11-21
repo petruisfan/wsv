@@ -41,7 +41,6 @@ public class CMD{
 			
 			command = cmd.charAt(0);
 		
-			
 			switch (command) {
 			case 'h':
 				System.out.println( helpMessage() );
@@ -79,18 +78,38 @@ public class CMD{
 					}
 				}
 				
-				if (port >0 && port < 65535 && server.maintenance()) {
-					//state.setPort(port);
+				if (port >0 && port < 65535) {
+					if (server.maintenance()) {
+						state.setPort(port);
 					
-					server.reset();
-
-					server.setPort(port);
-					
-					this.startServer();
+						server.setPort(port);
+						
+						server.reset();
+						
+						this.startServer();
+						
+					} else {
+						System.out.println("Server must be in maintenance mode to change port.");
+					}
+				} else {
+					System.out.println("Port number not in acceptable range.");
 				}
+					
 				
 				break;
 			
+			case 'w':
+				Main.logger.info("User hit \"w\" to change server web root.");
+				
+				System.out.print("Enter the new web root: ");
+				String webRoot = input.readLine();
+
+				server.setWebRoot(webRoot);
+				
+				state.setWWWroot(webRoot);
+				
+				break;
+				
 			case 'p':
 				System.out.println(server.getServerState());
 				
@@ -128,7 +147,7 @@ public class CMD{
 		result += " m - toggle maintenance mode on/off.\n";
 		result += " k - stop (kill) the webserver.\n";
 		result += " c - change port.\n";
-		//result += " w - change web root.\n";
+		result += " w - change web root.\n";
 		result += " p - print current state.\n";
 		result += " h - print this help menu.\n";
 		result += " q - quit the application.\n";

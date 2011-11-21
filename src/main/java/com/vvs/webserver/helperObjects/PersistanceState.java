@@ -10,7 +10,7 @@ import java.io.IOException;
 import com.vvs.Main;
 
 public class PersistanceState {
-	private static final String stateFile = " target/data.cfg";
+	private static final String stateFile = "target/data.cfg";
 	private File f = new File(stateFile);
 	
 	private static final int defaultPort = 10008;
@@ -47,13 +47,18 @@ public class PersistanceState {
 
 	private void initialize(File f) {
 		try {
-			f.createNewFile();
+			if (f.exists()) {
+				f.delete();
+			}
+
+			f.createNewFile();			
 			
 			BufferedWriter out = new BufferedWriter ( new FileWriter(f));
 			
 			out.write(latestPort + "\n");
 			out.write(latestWWWroot+ " \n");
 			
+			Main.logger.info("New data was writen to persistance file.");
 		} catch (IOException e) {
 			Main.logger.error("Persistence state file initialization error: " + e);
 		}
@@ -68,7 +73,7 @@ public class PersistanceState {
 	}
 	
 	public void setWWWroot(String root) {
-		if (this.latestWWWroot.equals(root)) {
+		if (!this.latestWWWroot.equals(root)) {
 			this.latestWWWroot = root;
 			this.initialize(f);
 		}
