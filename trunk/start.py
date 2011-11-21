@@ -10,5 +10,6 @@ CP=[ "target/webserver.jar",
 cmd = "java -classpath " + ":".join(CP) + " com.vvs.Main -c"
 
 #print cmd
+print os.system("rm target/logs/webserver.log")
 
 os.system(cmd)
