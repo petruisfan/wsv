@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 
 import com.vvs.Main;
 import com.vvs.webserver.ConnectionManager;
+import com.vvs.webserver.helperObjects.PersistanceState;
 
 public class CMD{
 	private ConnectionManager server = null;
 	private Thread thread = null;
+	private PersistanceState state = new PersistanceState();
 	
 	
 	public CMD() {
@@ -17,7 +19,7 @@ public class CMD{
 	}
 	
 	private void reset() {
-		server = new ConnectionManager();
+		server = new ConnectionManager( state.getPort() );
 		thread = new Thread(server);
 	}
 
@@ -46,10 +48,7 @@ public class CMD{
 				break;
 
 			case 's':
-				if (! thread.isAlive() ) {
-					thread = new Thread(server);
-					thread.start();
-				}
+				this.startServer();
 				Main.logger.info("User hit \"s\" to start the server.");
 				
 				break;
@@ -64,6 +63,32 @@ public class CMD{
 				server.reset();
 				
 				Main.logger.info("User hit \"k\" to kill the server.");
+				break;
+			
+			case 'c':
+				Main.logger.info("User hit \"c\" to change port.");
+				int port = -1;
+				
+				while (port == -1) {
+					try {
+						System.out.print("Change port number to: ");
+						port = Integer.valueOf(input.readLine());
+
+					} catch (Exception e) {
+						Main.logger.error("Error reading new port from keyboard.");
+					}
+				}
+				
+				if (port >0 && port < 65535 && server.maintenance()) {
+					//state.setPort(port);
+					
+					server.reset();
+
+					server.setPort(port);
+					
+					this.startServer();
+				}
+				
 				break;
 			
 			case 'p':
@@ -89,13 +114,20 @@ public class CMD{
 		}
 	}
 	
+	private void startServer() {
+		if (! thread.isAlive() ) {
+			thread = new Thread(server);
+			thread.start();
+		}	
+	}
+
 	private String helpMessage() {
 		String result = "";
 		
 		result += " s - start the webserver.\n";
 		result += " m - toggle maintenance mode on/off.\n";
 		result += " k - stop (kill) the webserver.\n";
-		//result += " c - change port.\n";
+		result += " c - change port.\n";
 		//result += " w - change web root.\n";
 		result += " p - print current state.\n";
 		result += " h - print this help menu.\n";

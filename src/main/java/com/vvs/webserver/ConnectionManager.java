@@ -37,7 +37,8 @@ public class ConnectionManager implements Runnable {
 				}
 			} catch (IOException e) {
 				Main.logger.fatal("Accept failed.");
-
+				Main.logger.fatal(e);
+				
 				//System.exit(1);
 			}
 		} catch (IOException e) {
@@ -103,5 +104,18 @@ public class ConnectionManager implements Runnable {
 		}
 		
 		Main.logger.info("Server reset.");
+	}
+	
+	public void setPort(int port) {
+		if (this.maintenance  || !this.running) {
+			this.port = port;
+		}
+		else {
+			System.out.println("Server must be in maintenance mode to change port.");
+		}
+	}
+
+	public boolean maintenance() {
+		return maintenance;
 	}
 }
