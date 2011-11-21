@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>vvs</groupId>
   <artifactId>webserver</artifactId>
-  <version>1.0</version>
+  <version>1.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>webserver</name>
   <url>http://maven.apache.org</url>
@@ -13,7 +13,7 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://wsv.googlecode.com/svn/tags/webserver-1.0</connection>
+    <connection>scm:svn:https://wsv.googlecode.com/svn/trunk</connection>
   </scm>
 
   <build>
