@@ -20,7 +20,8 @@ public class CMD{
 	
 	private void reset() {
 		server = new ConnectionManager( state.getPort() );
-		thread = new Thread(server);
+		server.setWebRoot ( state.getWWWroot() );
+		thread = new Thread( server );
 	}
 
 	public void run() throws IOException, InterruptedException {
@@ -66,48 +67,52 @@ public class CMD{
 			
 			case 'c':
 				Main.logger.info("User hit \"c\" to change port.");
-				int port = -1;
-				
-				while (port == -1) {
-					try {
-						System.out.print("Change port number to: ");
-						port = Integer.valueOf(input.readLine());
+				if (server.maintenance()) {
+					int port = -1;
 
-					} catch (Exception e) {
-						Main.logger.error("Error reading new port from keyboard.");
+					while (port == -1) {
+						try {
+							System.out.print("Change port number to: ");
+							port = Integer.valueOf(input.readLine());
+
+						} catch (Exception e) {
+							Main.logger.error("Error reading new port from keyboard.");
+						}
 					}
-				}
-				
-				if (port >0 && port < 65535) {
-					if (server.maintenance()) {
-						state.setPort(port);
-					
-						server.setPort(port);
-						
+
+					if (port >0 && port < 65535) {
 						server.reset();
 						
+						state.setPort(port);
+
+						server.setPort(port);
+
 						this.startServer();
-						
+						server.setMaintenace(true);
+
 					} else {
-						System.out.println("Server must be in maintenance mode to change port.");
+						System.out.println("Port number not in acceptable range.");
 					}
 				} else {
-					System.out.println("Port number not in acceptable range.");
+					System.out.println("Server must be in maintenance mode to change port.");
 				}
-					
-				
+
+
 				break;
-			
+
 			case 'w':
 				Main.logger.info("User hit \"w\" to change server web root.");
-				
-				System.out.print("Enter the new web root: ");
-				String webRoot = input.readLine();
 
-				server.setWebRoot(webRoot);
-				
-				state.setWWWroot(webRoot);
-				
+				if (server.maintenance()) {
+					System.out.print("Enter the new web root: ");
+					String webRoot = input.readLine();
+
+					server.setWebRoot(webRoot);
+
+					state.setWWWroot(webRoot);
+
+				} else
+					System.out.println("Can only change web root if in maintenance");
 				break;
 				
 			case 'p':
