@@ -98,7 +98,7 @@ public class ConnectionManager implements Runnable {
 	}
 	
 	public void reset() throws IOException {
-		Thread.currentThread().interrupt();
+		
 		
 		this.maintenance = false;
 		this.running = false;
@@ -107,9 +107,15 @@ public class ConnectionManager implements Runnable {
 			this.serverSocket.close();
 		}
 		
+		Thread.currentThread().interrupt();
+		
 		Main.logger.info("Server reset.");
 	}
 	
+	/**
+	 * Set the port number is server is in maintenance or stopped.
+	 * @param port
+	 */
 	public void setPort(int port) {
 		if (this.maintenance  || !this.running) {
 			this.port = port;
@@ -124,6 +130,9 @@ public class ConnectionManager implements Runnable {
 	}
 
 	public void setWebRoot(String webRoot) {
+		if ( ! webRoot.endsWith("/")) {
+			webRoot += "/";
+		}
 		this.ROOT = webRoot;
 	}
 }

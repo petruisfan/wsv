@@ -19,6 +19,9 @@ public class PersistanceState {
 	private int latestPort = defaultPort;
 	private String latestWWWroot = defaultWWWroot;
 	
+	public PersistanceState() {
+		this.update();
+	}
 	
 	private boolean update() {
 		boolean result = false;
@@ -52,11 +55,13 @@ public class PersistanceState {
 			}
 
 			f.createNewFile();			
-			
+
 			BufferedWriter out = new BufferedWriter ( new FileWriter(f));
 			
 			out.write(latestPort + "\n");
-			out.write(latestWWWroot+ " \n");
+			out.write(latestWWWroot);
+
+			out.close();
 			
 			Main.logger.info("New data was writen to persistance file.");
 		} catch (IOException e) {
@@ -83,5 +88,11 @@ public class PersistanceState {
 	public int getPort() {
 		this.update();
 		return this.latestPort;
+	}
+
+
+	public String getWWWroot() {
+		this.update();
+		return latestWWWroot;
 	}
 }
