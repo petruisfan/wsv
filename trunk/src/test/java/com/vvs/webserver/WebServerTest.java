@@ -17,7 +17,7 @@ public class WebServerTest {
 			
 	@Test (expected=IllegalArgumentException.class)
 	public void nullSocket() {
-		web = new WebServer(null, true);
+		web = new WebServer(null, true, "www");
 	}
 	
 	@Test

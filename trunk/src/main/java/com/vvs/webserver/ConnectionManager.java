@@ -9,8 +9,12 @@ import com.vvs.webserver.WebServer;
 public class ConnectionManager implements Runnable {
 	private boolean maintenance = false;
 	private boolean running = false;
+	
 	private int port = 10008;
+	private String ROOT = "www/";
+	
 	private ServerSocket serverSocket = null;
+	
 	
 	
 	public ConnectionManager() {
@@ -33,7 +37,7 @@ public class ConnectionManager implements Runnable {
 				while (!Thread.currentThread().isInterrupted()) {
 					Main.logger.info("Waiting for Connection");
 
-					new WebServer(serverSocket.accept(), maintenance);
+					new WebServer(serverSocket.accept(), maintenance, ROOT);
 				}
 			} catch (IOException e) {
 				Main.logger.fatal("Accept failed.");
@@ -117,5 +121,9 @@ public class ConnectionManager implements Runnable {
 
 	public boolean maintenance() {
 		return maintenance;
+	}
+
+	public void setWebRoot(String webRoot) {
+		this.ROOT = webRoot;
 	}
 }

@@ -12,7 +12,7 @@ import com.vvs.Main;
 import com.vvs.webserver.helperObjects.HttpResponse;
 
 public class WebServer extends Thread {
-	private static final String ROOT = "./www/";
+	private String ROOT = "./www/";
 	boolean maintenance = false;
 
 	protected Socket clientSocket;
@@ -20,13 +20,16 @@ public class WebServer extends Thread {
 	private ArrayList<String> httpGet = new ArrayList<String>(); 
 	
 	
-	public WebServer(Socket clientSoc, boolean maintenance) {
+	public WebServer(Socket clientSoc, boolean maintenance, String webRoot) {
 		if (clientSoc == null) {
 			throw new IllegalArgumentException("Invalid argument");
 		}
 		this.maintenance = maintenance;
 		
         clientSocket = clientSoc;
+        ROOT = webRoot;
+        
+        
         start();
     }
 
