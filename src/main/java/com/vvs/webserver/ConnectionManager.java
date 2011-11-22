@@ -38,6 +38,7 @@ public class ConnectionManager implements Runnable {
 					Main.logger.info("Waiting for Connection");
 
 					new WebServer(serverSocket.accept(), maintenance, ROOT);
+					
 				}
 			} catch (IOException e) {
 				Main.logger.fatal("Accept failed.");
@@ -54,7 +55,8 @@ public class ConnectionManager implements Runnable {
 				serverSocket.close();
 			} catch (IOException e) {
 				Main.logger.error("Could not close port: " + port);
-				System.exit(1);
+				//System.exit(1);
+				throw new RuntimeException();
 			}
 		}
 	}

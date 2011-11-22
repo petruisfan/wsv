@@ -15,12 +15,14 @@ public class Main {
 			logger.info("Printed help message.");
 			
 		} else if (args[0].equals("-c")) {
-			startCmd();
 			logger.info("Started command line.");
 			
+			startCmd();
+			
 		} else if (args[0].equals("-g")) {
-			startGUI();
 			logger.info("Started GUI mode.");
+			
+			startGUI();
 			
 		}
 		System.exit(0);

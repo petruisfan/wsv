@@ -32,16 +32,25 @@ public class PersistanceState {
 			return true;
 		}
 		
+		BufferedReader in = null;
+		
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(f));
+			in = new BufferedReader(new FileReader(f));
 			
 			this.latestPort = Integer.valueOf(in.readLine());
 			this.latestWWWroot = in.readLine();
 			result = true;
 			
+			
 		} catch (Exception e) {
 			Main.logger.error("Problem reading state file: will now reset it.");
 			this.initialize(f);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				
+			}
 		}
 		
 		return result;
@@ -49,13 +58,18 @@ public class PersistanceState {
 
 
 	private void initialize(File f) {
+		boolean ret = false;
 		try {
 			if (f.exists()) {
-				f.delete();
+				ret = f.delete();
 			}
 
-			f.createNewFile();			
+			if (! ret ) throw new IOException(stateFile + " could not be deleted.");
+				
+			ret = f.createNewFile();			
 
+			if (! ret ) throw new IOException(stateFile + " could not be created.");
+			
 			BufferedWriter out = new BufferedWriter ( new FileWriter(f));
 			
 			out.write(latestPort + "\n");
