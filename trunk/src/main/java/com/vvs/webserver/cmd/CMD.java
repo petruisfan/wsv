@@ -36,7 +36,7 @@ public class CMD{
 			cmd = input.readLine();
 			
 			// If the reading went wrong, use i for invalid. 
-			if (cmd.length() == 0 || cmd == null) {
+			if (cmd == null || cmd.length() == 0) {
 				cmd = "i";
 			}
 			
@@ -107,9 +107,11 @@ public class CMD{
 					System.out.print("Enter the new web root: ");
 					String webRoot = input.readLine();
 
-					server.setWebRoot(webRoot);
+					if (webRoot != null){
+						server.setWebRoot(webRoot);
 
-					state.setWWWroot(webRoot);
+						state.setWWWroot(webRoot);
+					}
 
 				} else
 					System.out.println("Can only change web root if in maintenance");

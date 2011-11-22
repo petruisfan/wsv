@@ -93,7 +93,13 @@ public class PageProcesor {
 			Main.logger.error(e);
 		} catch (IOException e) {
 			Main.logger.error(e);
+		} finally {
+			try {
+				fileR.close();
+			} catch (IOException e) {
+			}
 		}
+		
 		
 		return result;
 	}

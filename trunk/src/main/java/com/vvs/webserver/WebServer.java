@@ -29,7 +29,6 @@ public class WebServer extends Thread {
         clientSocket = clientSoc;
         ROOT = webRoot;
         
-        
         start();
     }
 
