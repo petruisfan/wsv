@@ -25,7 +25,6 @@ public class Main {
 			startGUI();
 			
 		}
-		System.exit(0);
 	}
 	
 	private static void printHelpMessage() {
