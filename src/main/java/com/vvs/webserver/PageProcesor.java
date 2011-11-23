@@ -78,6 +78,7 @@ public class PageProcesor {
 					page.endsWith(".tif") ||
 					page.endsWith(".tiff") ||
 					page.endsWith(".ico")) {
+				
 				response.setContentType("image/x-icon");
 			}
 			
