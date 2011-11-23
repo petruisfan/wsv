@@ -26,7 +26,7 @@ public class WebServerTest {
 		
 		String line = "GET /aaa HTTP/1.1";
 		
-		web.handleRequest(line, null);
-		verify(web).processHttpGet(line, null);
+		web.handleRequest(line);
+		verify(web).processHttpGet(line);
 	}
 }

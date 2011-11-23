@@ -23,7 +23,6 @@ public class Main {
 			logger.info("Started GUI mode.");
 			
 			startGUI();
-			
 		}
 	}
 	

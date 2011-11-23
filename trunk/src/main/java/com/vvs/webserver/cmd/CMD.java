@@ -173,7 +173,7 @@ public class CMD{
 	/**
 	 * Toggle maintenance state on/off on server.
 	 */
-	private void toggleMaintenance() {
+	void toggleMaintenance() {
 		server.toggleMintenance();
 	}
 

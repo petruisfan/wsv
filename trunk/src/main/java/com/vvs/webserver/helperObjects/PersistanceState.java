@@ -112,4 +112,8 @@ public class PersistanceState {
 		this.update();
 		return latestWWWroot;
 	}
+	
+	public static String getStatefile() {
+		return stateFile;
+	}
 }

@@ -152,4 +152,8 @@ public class ConnectionManager implements Runnable {
 	public int getPort() {
 		return this.port;
 	}
+	
+	public String getWwwRoot() {
+		return this.ROOT;
+	}
 }

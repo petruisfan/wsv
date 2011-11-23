@@ -18,6 +18,7 @@ public class WebServer extends Thread {
 	protected Socket clientSocket;
 	private PageProcesor pp = null;
 	private ArrayList<String> httpGet = new ArrayList<String>(); 
+	private BufferedOutputStream out ;
 	
 	
 	public WebServer(Socket clientSoc, boolean maintenance, String webRoot) {
@@ -38,7 +39,6 @@ public class WebServer extends Thread {
 		// Firebug says StringBuffer is better to use in a loop instead of +=
 		//
 		StringBuffer aux2 = new StringBuffer("");
-		BufferedOutputStream out ;
 		BufferedReader in;
 		
 		
@@ -79,7 +79,7 @@ public class WebServer extends Thread {
 				//this.basicTest(inputLine, out);
 				
 				// use this for real server
-				this.handleRequest(aux, out);
+				this.handleRequest(aux);
 				
 				Main.logger.info("Server responds to this line: " + aux);
 			}
@@ -105,9 +105,9 @@ public class WebServer extends Thread {
 	 * @param out
 	 * @throws IOException 
 	 */
-	void handleRequest(String inputLine, BufferedOutputStream out) throws IOException {
+	void handleRequest(String inputLine) throws IOException {
 		if (inputLine.startsWith("GET") && inputLine.endsWith("HTTP/1.1")) {
-			this.processHttpGet(inputLine, out);		
+			this.processHttpGet(inputLine);		
 		}
 	}
 
@@ -117,7 +117,7 @@ public class WebServer extends Thread {
 	 * @param out
 	 * @throws IOException 
 	 */
-	void processHttpGet(String inputLine, BufferedOutputStream out) throws IOException {
+	void processHttpGet(String inputLine) throws IOException {
 		boolean processResult = false;
 		String[] strings = inputLine.split(" ");
 		Main.logger.info("Page: " + strings[1] + " was requested.");
