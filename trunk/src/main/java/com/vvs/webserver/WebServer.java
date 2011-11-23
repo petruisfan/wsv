@@ -34,6 +34,10 @@ public class WebServer extends Thread {
 
 	public void run() {
 		String aux = "", inputLine;
+		//
+		// Firebug says StringBuffer is better to use in a loop instead of +=
+		//
+		StringBuffer aux2 = new StringBuffer("");
 		BufferedOutputStream out ;
 		BufferedReader in;
 		
@@ -58,11 +62,11 @@ public class WebServer extends Thread {
 			//
 			// for safety, let's log the http get.
 			//
-			aux = "Server received this http request:\n";
+			aux2.append("Server received this http request:\n");
 			for (String s:httpGet) {
-				aux += s + "\n";
+				aux2.append(s + "\n");
 			}
-			Main.logger.info(aux);
+			Main.logger.info(aux2);
 			
 			
 			//
@@ -85,7 +89,12 @@ public class WebServer extends Thread {
 			clientSocket.close();
 		} catch (IOException e) {
 			Main.logger.error("Problem with Communication Server");
-			System.exit(1);
+			//System.exit(1);
+			
+			//
+			// Findbugs says this is better.
+			//
+			throw new RuntimeException();
 		}
 	}
 

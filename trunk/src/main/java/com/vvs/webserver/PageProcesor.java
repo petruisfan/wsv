@@ -13,7 +13,7 @@ import com.vvs.webserver.helperObjects.HttpResponse;
 public class PageProcesor {
 	private String webRoot = "";
 	private BufferedOutputStream out = null; 
-	private String maintenanceString = "<h1>Down for maintenance!</h1>";
+	private String maintenanceString = "<html><body><h1>Down for maintenance!</h1></body></html>";
 	
 	
 	public PageProcesor(String root, BufferedOutputStream out) {

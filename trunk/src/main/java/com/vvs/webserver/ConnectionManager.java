@@ -49,7 +49,11 @@ public class ConnectionManager implements Runnable {
 		} catch (IOException e) {
 			Main.logger.fatal("Could not listen on port: " + port);
 			
-			System.exit(1);
+			//System.exit(1);
+			//
+			// Findbugs says this is better.
+			//
+			throw new RuntimeException();
 		} finally {
 			try {
 				serverSocket.close();
@@ -99,14 +103,19 @@ public class ConnectionManager implements Runnable {
 		return result;
 	}
 	
-	public void reset() throws IOException {
+	public void reset(){
 		
 		
 		this.maintenance = false;
 		this.running = false;
 
 		if (this.serverSocket != null) {
-			this.serverSocket.close();
+			try {
+				this.serverSocket.close();
+			} catch (IOException e) {
+				Main.logger.error("Error closing server socket while reseting ConnectionManager.");
+				return ;
+			}
 		}
 		
 		Thread.currentThread().interrupt();
@@ -136,5 +145,11 @@ public class ConnectionManager implements Runnable {
 			webRoot += "/";
 		}
 		this.ROOT = webRoot;
+	}
+
+	// Methods used for testing
+	
+	public int getPort() {
+		return this.port;
 	}
 }
