@@ -21,7 +21,7 @@ public class PageProcesorTest {
 		
 		out = new BufferedOutputStream(byteStream);
 		
-		pp = new PageProcesor("/var/www/", out);
+		pp = new PageProcesor("www/", out);
 	}
 	
 	// constructor tests
@@ -61,5 +61,20 @@ public class PageProcesorTest {
 		pp = new PageProcesor("/var/www/", null);
 		
 		pp.maintenance();
+	}
+	
+	@Test
+	public void maintenanceTest() throws IOException {
+		assertTrue(pp.maintenance());
+	}
+	
+	@Test
+	public void getRoot() {
+		assertTrue(pp.processPage("/"));
+	}
+	
+	@Test
+	public void getPNG() {
+		assertTrue(pp.processPage("aaa.png"));
 	}
 }

@@ -49,14 +49,15 @@ public class ConnectionManager implements Runnable {
 		} catch (IOException e) {
 			Main.logger.fatal("Could not listen on port: " + port);
 			
-			//System.exit(1);
+			System.exit(1);
 			//
 			// Findbugs says this is better.
 			//
-			throw new RuntimeException();
+			//throw new RuntimeException();
 		} finally {
 			try {
-				serverSocket.close();
+				if (serverSocket != null)
+					serverSocket.close();
 			} catch (IOException e) {
 				Main.logger.error("Could not close port: " + port);
 				//System.exit(1);
@@ -110,7 +111,7 @@ public class ConnectionManager implements Runnable {
 
 		if (this.serverSocket != null) {
 			try {
-				this.serverSocket.close();
+				serverSocket.close();
 			} catch (IOException e) {
 				Main.logger.error("Error closing server socket while reseting ConnectionManager.");
 				return ;

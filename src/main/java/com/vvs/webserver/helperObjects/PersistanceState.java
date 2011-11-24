@@ -53,7 +53,9 @@ public class PersistanceState {
 			Main.logger.error("The file must have been not created properly.\n" + e);
 			
 		} catch (NumberFormatException e) {
-			Main.logger.error("The first line in the file was not a number !?" + e);
+			Main.logger.error("The first line in the file was not a number !?" +
+					" I will write the file again..." + e);
+			this.initialize(f);
 			
 		} catch (IOException e) {
 			Main.logger.error("Some problems with IO."+e);
