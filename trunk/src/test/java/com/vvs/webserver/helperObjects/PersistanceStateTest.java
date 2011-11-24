@@ -16,6 +16,7 @@ public class PersistanceStateTest {
 	private String stateFile;
 
 
+	@SuppressWarnings("static-access")
 	@Before
 	public void setUp() {
 		state = new PersistanceState();
@@ -24,7 +25,8 @@ public class PersistanceStateTest {
 
 	@Test
 	public void constructorTest() {
-		// TODO
+		state = new PersistanceState();
+		this.updateTest();
 	}
 
 	@Test
@@ -43,6 +45,31 @@ public class PersistanceStateTest {
 		assertEquals("www22", this.getLine(2));
 	}
 
+	@Test
+	public void initializeTest() {
+		File f = new File(stateFile);
+		
+		boolean result = state.initialize(f);
+		assertTrue(result);
+		
+		int filePort = Integer.valueOf(this.getLine(1));
+		
+		assertEquals(state.getPort(), filePort);
+		assertTrue(state.getWWWroot().equals( this.getLine(2) ));
+	}
+	
+	@Test
+	public void updateTest() {
+		boolean result = state.update();
+		assertTrue(result);
+		
+		int filePort = Integer.valueOf(this.getLine(1));
+		
+		assertEquals(state.getPort(), filePort);
+		assertTrue(state.getWWWroot().equals( this.getLine(2) ));
+	}
+	
+	
 	private String getLine(int nr) {
 		BufferedReader in = null;
 		File f = new File(stateFile);

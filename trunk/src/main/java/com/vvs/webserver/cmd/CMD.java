@@ -166,7 +166,7 @@ public class CMD{
 		return result;
 	}
 
-	private void killServer() {
+	void killServer() {
 		server.reset();
 	}
 
@@ -180,14 +180,14 @@ public class CMD{
 	/**
 	 * Start the server
 	 */
-	private void startServer() {
+	void startServer() {
 		if (! thread.isAlive() ) {
 			thread = new Thread(server);
 			thread.start();
 		}	
 	}
 	
-	private String helpMessage() {
+	String helpMessage() {
 		String result = "";
 		
 		result += " s - start the webserver.\n";

@@ -13,15 +13,16 @@ import com.vvs.webserver.ConnectionManager;
 
 public class CMDtest {
 	private CMD cmd;
-
+	private ConnectionManager server;
 	
 	@Before 
 	public void setUp() {
-
+		cmd = new CMD();
+		server = cmd.getServer();
 	}
 	
 	@Test
-	public void test() {
+	public void changeWebRootTest() {
 		cmd = spy ( new CMD());
 		
 		try {
@@ -57,5 +58,41 @@ public class CMDtest {
 		ConnectionManager server = cmd.getServer();
 		
 		assertEquals(2000, server.getPort());
+	}
+	
+	@Test
+	public void helpMessageTest() {
+		String output =  cmd.helpMessage();
+		
+		String result = "";
+		
+		result += " s - start the webserver.\n";
+		result += " m - toggle maintenance mode on/off.\n";
+		result += " k - stop (kill) the webserver.\n";
+		result += " c - change port.\n";
+		result += " w - change web root.\n";
+		result += " p - print current state.\n";
+		result += " h - print this help menu.\n";
+		result += " q - quit the application.\n";
+
+		assertTrue(result.equals(output));
+	}
+	
+	@Test  
+	public void testStartStop () throws InterruptedException {
+		assertTrue(cmd.getServer().getServerState().equalsIgnoreCase("stopped"));
+		
+		cmd.startServer();
+		server.run();
+		assertTrue(cmd.getServer().getServerState().equalsIgnoreCase("running"));
+		
+		cmd.toggleMaintenance();
+		assertTrue(cmd.getServer().getServerState().equalsIgnoreCase("maintenance"));
+		
+		cmd.toggleMaintenance();
+		assertTrue(cmd.getServer().getServerState().equalsIgnoreCase("running"));
+		
+		cmd.killServer();
+		assertTrue(cmd.getServer().getServerState().equalsIgnoreCase("stopped"));
 	}
 }
