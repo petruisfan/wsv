@@ -25,7 +25,7 @@ public class ConnectionManager implements Runnable {
 		this.port = p;
 	}
 	
-	private void startServer() {
+	void startServer() {
 		try {
 			serverSocket = new ServerSocket(port);
 
@@ -103,9 +103,8 @@ public class ConnectionManager implements Runnable {
 		return result;
 	}
 	
+	
 	public void reset(){
-		
-		
 		this.maintenance = false;
 		this.running = false;
 

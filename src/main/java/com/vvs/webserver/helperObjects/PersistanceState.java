@@ -24,13 +24,20 @@ public class PersistanceState {
 		this.update();
 	}
 
-	private boolean update() {
+	/**
+	 * Read what is in the file and update the values.
+	 * @return
+	 */
+	boolean update() {
 		boolean result = false;
 
+		//
+		// If file does not exist, create it.
+		//
 		if (! f.exists()) {
-			Main.logger.error("Will now initialize state file.");
-			this.initialize(f);
-			return true;
+			Main.logger.info("Will now initialize state file.");
+			result = this.initialize(f);
+			return result;
 		}
 
 		BufferedReader in = null;
@@ -59,8 +66,13 @@ public class PersistanceState {
 		return result;
 	}
 
-
-	private void initialize(File f) {
+	/**
+	 * Create the file from scratch. Delete it, if it exists. 
+	 * Write the latest values in it.
+	 * @param f
+	 * @return
+	 */
+	boolean initialize(File f) {
 		boolean ret = true;
 		try {
 			if (f.exists()) {
@@ -84,6 +96,7 @@ public class PersistanceState {
 		} catch (IOException e) {
 			Main.logger.error("Persistence state file initialization error: " + e);
 		}
+		return ret;
 	}
 
 
@@ -112,6 +125,9 @@ public class PersistanceState {
 		this.update();
 		return latestWWWroot;
 	}
+	
+	
+	// used for tests
 	
 	public static String getStatefile() {
 		return stateFile;
