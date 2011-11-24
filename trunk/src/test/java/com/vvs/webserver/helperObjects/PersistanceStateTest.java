@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.Before;
@@ -44,6 +45,24 @@ public class PersistanceStateTest {
 		assertEquals("www22", state.getWWWroot());
 		assertEquals("www22", this.getLine(2));
 	}
+	
+	@Test
+	public void portTest2() {
+		int port = state.getPort();
+		state.setPort(port);
+
+		assertEquals(port, state.getPort());
+		assertEquals(Integer.toString(port), this.getLine(1));
+	}
+	
+	@Test
+	public void rootTest2() {
+		String root = state.getWWWroot();
+		state.setWWWroot(root);
+
+		assertEquals(root, state.getWWWroot());
+		assertEquals(root, this.getLine(2));
+	}
 
 	@Test
 	public void initializeTest() {
@@ -69,6 +88,38 @@ public class PersistanceStateTest {
 		assertTrue(state.getWWWroot().equals( this.getLine(2) ));
 	}
 	
+	@Test
+	public void updateTest2() {
+		File f = new File(stateFile);
+		if (f.exists()) {
+			f.delete();
+		}
+		
+		boolean result = state.update();
+		assertTrue(result);
+		
+		int filePort = Integer.valueOf(this.getLine(1));
+		
+		assertEquals(state.getPort(), filePort);
+		assertTrue(state.getWWWroot().equals( this.getLine(2) ));
+	}
+	
+	@Test
+	public void updateTest3() throws IOException {
+		File f = new File(stateFile);
+		if (f.exists()) {
+			FileWriter out = new FileWriter(f);
+			out.write("aaa\n");
+		}
+		
+		boolean result = state.update();
+		assertFalse(result);
+		
+		int filePort = Integer.valueOf(this.getLine(1));
+		
+		assertEquals(state.getPort(), filePort);
+		assertTrue(state.getWWWroot().equals( this.getLine(2) ));
+	}
 	
 	private String getLine(int nr) {
 		BufferedReader in = null;

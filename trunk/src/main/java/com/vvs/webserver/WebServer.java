@@ -28,6 +28,11 @@ public class WebServer extends Thread {
 		this.maintenance = maintenance;
 		
         clientSocket = clientSoc;
+        
+        if (!webRoot.endsWith("/") ) {
+        	webRoot+="/";
+        }
+        	
         ROOT = webRoot;
         
         start();
@@ -105,10 +110,13 @@ public class WebServer extends Thread {
 	 * @param out
 	 * @throws IOException 
 	 */
-	void handleRequest(String inputLine) throws IOException {
+	boolean handleRequest(String inputLine) throws IOException {
+		boolean result = false;
+		
 		if (inputLine.startsWith("GET") && inputLine.endsWith("HTTP/1.1")) {
-			this.processHttpGet(inputLine);		
+			result = this.processHttpGet(inputLine);		
 		}
+		return result;
 	}
 
 	/**
@@ -117,8 +125,12 @@ public class WebServer extends Thread {
 	 * @param out
 	 * @throws IOException 
 	 */
-	void processHttpGet(String inputLine) throws IOException {
+	boolean processHttpGet(String inputLine) throws IOException {
 		boolean processResult = false;
+		
+		if (inputLine == null || !inputLine.contains(" "))
+			return false;
+		
 		String[] strings = inputLine.split(" ");
 		Main.logger.info("Page: " + strings[1] + " was requested.");
 
@@ -127,14 +139,14 @@ public class WebServer extends Thread {
 		} 
 		else {
 			if (!maintenance){
+				Main.logger.info(strings[1] + " will be processed.");
+				
 				processResult = pp.processPage(strings[1]);
 				
-				Main.logger.info(strings[1] + " will be processed."); 
-						
 			} else {
-				processResult = pp.maintenance();
-				
 				Main.logger.info("Maintenance page will be replied");
+					
+				processResult = pp.maintenance();
 			}
 		}
 		
@@ -148,6 +160,8 @@ public class WebServer extends Thread {
 			
 			Main.logger.error("Something bad happened. Code 404 has been replied.");
 		}
+		
+		return processResult;
 	}
 
 	
@@ -160,5 +174,12 @@ public class WebServer extends Thread {
 	private void basicTest(String inputLine, PrintWriter out) {
 		//System.out.println("Server: " + inputLine);
 		out.println(inputLine);
+	}
+	
+	
+// used for test
+	void setPP(BufferedOutputStream out) {
+		pp = new PageProcesor(ROOT, out);
+		this.out = out;
 	}
 }
