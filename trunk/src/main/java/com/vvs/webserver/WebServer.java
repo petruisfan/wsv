@@ -18,7 +18,7 @@ public class WebServer extends Thread {
 	protected Socket clientSocket;
 	private PageProcesor pp = null;
 	private ArrayList<String> httpGet = new ArrayList<String>(); 
-	private BufferedOutputStream out ;
+	private volatile BufferedOutputStream out ;
 	
 	
 	public WebServer(Socket clientSoc, boolean maintenance, String webRoot) {
@@ -94,6 +94,7 @@ public class WebServer extends Thread {
 			clientSocket.close();
 		} catch (IOException e) {
 			Main.logger.error("Problem with Communication Server");
+			
 			//System.exit(1);
 			
 			//

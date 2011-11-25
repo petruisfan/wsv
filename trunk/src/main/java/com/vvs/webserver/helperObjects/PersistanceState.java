@@ -62,7 +62,9 @@ public class PersistanceState {
 		} finally {
 			try {
 				in.close();
-			} catch (IOException e) {}
+			} catch (IOException e) {
+				Main.logger.error(e);
+			}
 		}
 
 		return result;

@@ -6,6 +6,8 @@ import java.security.InvalidParameterException;
 
 import org.junit.Test;
 
+import com.vvs.webserver.helperObjects.HttpResponse;
+
 public class HttpResponseTest {
 
 	@Test

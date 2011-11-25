@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 
 import com.vvs.Main;
-import com.vvs.webserver.WebServer;
 
 public class ConnectionManager implements Runnable {
 	private boolean maintenance = false;
@@ -49,11 +48,11 @@ public class ConnectionManager implements Runnable {
 		} catch (IOException e) {
 			Main.logger.fatal("Could not listen on port: " + port);
 			
-			System.exit(1);
+			//System.exit(1);
 			//
 			// Findbugs says this is better.
 			//
-			//throw new RuntimeException();
+			throw new RuntimeException();
 		} finally {
 			try {
 				if (serverSocket != null)
