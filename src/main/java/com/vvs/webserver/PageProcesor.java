@@ -80,6 +80,12 @@ public class PageProcesor {
 					page.endsWith(".ico")) {
 				
 				response.setContentType("image/x-icon");
+			} else if (page.endsWith(".css")) {
+				response.setContentType("text/css");
+			} else if (page.endsWith(".js")) {
+				response.setContentType("application/javascript");
+			} else if (page.endsWith(".pdf")) {
+				response.setContentType("application/pdf");
 			}
 			
 			out.write(response.getHeader().getBytes());
@@ -96,11 +102,13 @@ public class PageProcesor {
 			Main.logger.error(e);
 		} finally {
 			try {
-				fileR.close();
+				if (fileR != null) {
+					fileR.close();
+				}
 			} catch (IOException e) {
+				Main.logger.error(e);
 			}
 		}
-		
 		
 		return result;
 	}
