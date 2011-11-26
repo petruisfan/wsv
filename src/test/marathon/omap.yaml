@@ -1,0 +1,48 @@
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JFrame}
+    - {name: oMapClassName, value: com.vvs.webserver.gui.GUI}
+    - {name: size, value: '[width=744,height=456]'}
+    - {name: oMapClassSimpleName, value: GUI}
+    - {name: title, value: WServer}
+    - {name: component.class.simpleName, value: GUI}
+    - {name: name, value: frame0}
+    - {name: component.class.name, value: com.vvs.webserver.gui.GUI}
+    - {name: accessibleContext.accessibleName, value: WServer}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: com.vvs.webserver.gui.GUI}
+    containerTitles: [WServer]
+    fileName: WServer_2196145284621114361.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    - {name: size, value: '[width=548,height=127]'}
+    - {name: oMapClassSimpleName, value: JOptionPane#Dialog}
+    - {name: title, value: Message}
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: name, value: dialog0}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Message}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JOptionPane#Dialog_1_-1}
+    containerTitles: [Message]
+    fileName: Message_5911178773736659129.yaml
+- !!net.sourceforge.marathon.objectmap.OMapContainer
+    containerGeneralProperties:
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JDialog}
+    - {name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    - {name: size, value: '[width=533,height=363]'}
+    - {name: oMapClassSimpleName, value: JFileChooser#Dialog}
+    - {name: title, value: Open}
+    - {name: component.class.simpleName, value: JDialog}
+    - {name: name, value: dialog0}
+    - {name: component.class.name, value: javax.swing.JDialog}
+    - {name: accessibleContext.accessibleName, value: Open}
+    containerRecognitionProperties:
+    - {method: equals, name: oMapClassName, value: javax.swing.JFileChooser#Dialog}
+    containerTitles: [Open]
+    fileName: Open_5225779066061589024.yaml
