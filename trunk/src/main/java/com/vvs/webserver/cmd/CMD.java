@@ -69,7 +69,7 @@ public class CMD{
 				
 				break;
 			case 'p':
-				System.out.println(server.getServerState());
+				System.out.println(getServerState());
 				Main.logger.info("User hit \"p\" to show server state.");
 
 				break;
@@ -92,6 +92,11 @@ public class CMD{
 		}
 	}
 	
+	public String getServerState() {
+		String result = server.getServerState();
+		return result;
+	}
+
 	/**
 	 * Reads a new web root from keyboard. Updates server & persistence.
 	 */
@@ -104,14 +109,25 @@ public class CMD{
 				Main.logger.error("Error when trying to read web root from keyboard.");
 			}
 
-			if (webRoot != null){
-				server.setWebRoot(webRoot);
-
-				state.setWWWroot(webRoot);
+			if (! changeServerWebRoot(webRoot) ) {
+				System.out.println("Problem encountered");
+				
+				Main.logger.error("Problem encountered when trying to change web root");
 			}
 		} else {
 			System.out.println("Can only change web root if in maintenance");
 		}
+	}
+
+	public boolean changeServerWebRoot(String webRoot) {
+		if (webRoot != null && ! webRoot.equals("")){
+			server.setWebRoot(webRoot);
+
+			state.setWWWroot(webRoot);
+			
+			return true;
+		} else 
+			return false;
 	}
 
 	/**
@@ -131,23 +147,30 @@ public class CMD{
 				}
 			}
 
-			if (port >0 && port < 65535) {
-				this.killServer();
-				
-				state.setPort(port);
-
-				server.setPort(port);
-
-				this.startServer();
-				
-				server.setMaintenace(true);
-			} else {
-				System.out.println("Port number not in acceptable range.");
-			}
+			System.out.print( changeServerPort ( port ) );
 		} else {
 			System.out.println("Server must be in maintenance mode to change port.");
 		}
 
+	}
+
+	public String changeServerPort(int port) {
+		String result = "";
+		if (port >0 && port < 65535) {
+			this.killServer();
+			
+			state.setPort(port);
+
+			server.setPort(port);
+
+			this.startServer();
+			
+			server.setMaintenace(true);
+		} else {
+			result = "Port number not in acceptable range.\n";
+		}
+		
+		return result;
 	}
 
 	/**
@@ -166,21 +189,21 @@ public class CMD{
 		return result;
 	}
 
-	void killServer() {
+	public void killServer() {
 		server.reset();
 	}
 
 	/**
 	 * Toggle maintenance state on/off on server.
 	 */
-	void toggleMaintenance() {
+	public void toggleMaintenance() {
 		server.toggleMintenance();
 	}
 
 	/**
 	 * Start the server
 	 */
-	void startServer() {
+	public void startServer() {
 		if (! thread.isAlive() ) {
 			thread = new Thread(server);
 			thread.start();
