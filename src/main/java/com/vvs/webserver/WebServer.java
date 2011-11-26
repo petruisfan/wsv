@@ -12,7 +12,7 @@ import com.vvs.Main;
 import com.vvs.webserver.helperObjects.HttpResponse;
 
 public class WebServer extends Thread {
-	private String ROOT = "./www/";
+	private String ROOT = "www/";
 	boolean maintenance = false;
 
 	protected Socket clientSocket;
