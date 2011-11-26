@@ -1,0 +1,35 @@
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: name, value: OptionPane.button}
+    - {method: equals, name: type, value: JButton}
+    generalProperties:
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JButton}
+    - {name: cText, value: OK}
+    - {name: type, value: JButton}
+    - {name: size, value: '[width=42,height=25]'}
+    - {name: component.class.simpleName, value: JButton}
+    - {name: name, value: OptionPane.button}
+    - {name: component.class.name, value: javax.swing.JButton}
+    - {name: fieldName, value: defaultButton}
+    - {name: accessibleContext.accessibleName, value: OK}
+    name: OptionPane.button
+- !!net.sourceforge.marathon.objectmap.OMapComponent
+    componentRecognitionProperties:
+    - {method: equals, name: name, value: OptionPane.label}
+    - {method: equals, name: type, value: JLabel}
+    generalProperties:
+    - {name: enabled, value: 'true'}
+    - {name: instanceOf, value: javax.swing.JLabel}
+    - {name: cText, value: Server must be running in maintenance mode to change web root}
+    - {name: type, value: JLabel}
+    - {name: size, value: '[width=465,height=15]'}
+    - {name: labelText, value: 'lbl:Server must be running in maintenance mode to
+            change web root'}
+    - {name: component.class.simpleName, value: JLabel}
+    - {name: name, value: OptionPane.label}
+    - {name: layoutData.gridy, value: '0'}
+    - {name: layoutData.gridx, value: '0'}
+    - {name: component.class.name, value: javax.swing.JLabel}
+    - {name: accessibleContext.accessibleName, value: Server must be running in maintenance mode to change web root}
+    name: OptionPane.label
