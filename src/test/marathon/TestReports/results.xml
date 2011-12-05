@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <test projectname='Marathon' reportdir='TestReports' >
 <testsuite name="AllTests" >
-  <testcase name="test1" status="0" time="6.87" >
+  <testcase name="test1" status="0" time="6.908" >
   </testcase>
-  <testcase name="test2" status="0" time="8.571" >
+  <testcase name="test2" status="0" time="8.323" >
   </testcase>
-  <testcase name="test3" status="0" time="8.153" >
+  <testcase name="test3" status="0" time="8.36" >
   </testcase>
 </testsuite>
 </test>
