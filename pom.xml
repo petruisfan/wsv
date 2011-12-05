@@ -4,7 +4,7 @@
 
   <groupId>vvs</groupId>
   <artifactId>webserver</artifactId>
-  <version>1.4</version>
+  <version>1.5-SNAPSHOT</version>
 
   <packaging>jar</packaging>
   <name>webserver</name>
@@ -18,8 +18,8 @@
   </properties>
 
   <scm>
-    <connection>scm:svn:https://wsv.googlecode.com/svn/tags/webserver-1.4</connection>
-    <url>http://code.google.com/p/wsv/source/browse/tags/webserver-1.4</url>
+    <connection>scm:svn:https://wsv.googlecode.com/svn/trunk</connection>
+    <url>http://code.google.com/p/wsv/source/browse/</url>
   </scm>
 
   <developers>
