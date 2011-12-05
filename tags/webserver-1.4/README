@@ -1,0 +1,9 @@
+Pentru pornirea serverului, se poate alege run.sh sau start.py.
+
+Default porneste pe localhost, port 10008.
+
+Web root: www (alternativ, www2).
+
+Documentatia proiectului:
+http://localhost:10008/site/index.html
+

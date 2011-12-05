@@ -1,0 +1,12 @@
+TestSuite: AllTests
+Tests run: 3,  Failures: 0,  Errors: 0,  Time elapsed: 23.591 seconds
+
+Testcase: test1   Passed
+ took 6.908 seconds
+
+Testcase: test2   Passed
+ took 8.323 seconds
+
+Testcase: test3   Passed
+ took 8.36 seconds
+
